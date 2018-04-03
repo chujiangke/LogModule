@@ -1,1 +1,0 @@
-richard@richard-Inspiron-N5010.6330:1519302023
