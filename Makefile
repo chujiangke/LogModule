@@ -115,7 +115,7 @@ ifneq ($(SO_TARGET),)
 endif
 
 #科达的通讯库如osp必须要 _LINUX_,所以此处增加一个，木有坏处
-CFLAGS += -D_LINUX_ -D_GLIBCXX_USE_CXX11_ABI=0 
+#CFLAGS += -D_LINUX_ -D_GLIBCXX_USE_CXX11_ABI=0 
 
 #所有头文件 路径
 CFLAGS += $(foreach dir,$(INC_PATH),-I$(dir))
@@ -193,7 +193,7 @@ cleanarc:
 endif
 
 ifneq ($(strip $(SO_TARGET)),)
-all: install
+3all: install
 install: install_inc install_so
 install_so: $(SO_TARGET)
 	$(INSTALL) $(SO_TARGET) $(INSTALL_LIB_PATH)/$(SO_TARGET)
