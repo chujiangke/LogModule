@@ -153,7 +153,7 @@ CC      = $(CROSS)gcc
 CPP     = $(CROSS)g++
 LD      = $(CROSS)g++
 AR      = $(CROSS)ar
-INSTALL = install  -m 644
+INSTALL = install -m 777
 OBJDUMP = objdump
 RM      = -@rm -f
 
@@ -193,7 +193,7 @@ cleanarc:
 endif
 
 ifneq ($(strip $(SO_TARGET)),)
-3all: install
+all: install
 install: install_inc install_so
 install_so: $(SO_TARGET)
 	$(INSTALL) $(SO_TARGET) $(INSTALL_LIB_PATH)/$(SO_TARGET)
