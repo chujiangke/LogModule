@@ -45,7 +45,7 @@ bool	got_sigusr1			= FALSE;        /* when set, the application should print sta
 bool	commandline_need_newline	= FALSE;        /* fancy output handling */
 
 /* global options flags */
-nc_mode_t	netcat_mode	= 0;                    /* Netcat working modality */
+nc_mode_t	netcat_mode	= NETCAT_UNSPEC;                    /* Netcat working modality */
 bool		opt_eofclose	= FALSE;                /* close connection on EOF from stdin */
 bool		opt_debug	= FALSE;                /* debugging output */
 bool		opt_numeric	= FALSE;                /* don't resolve hostnames */
@@ -163,9 +163,9 @@ int main( int argc, char *argv[] )
 	connect_sock.domain	= PF_INET;
 
 #ifdef ENABLE_NLS
-	setlocale( LC_MESSAGES, "" );
-	bindtextdomain( PACKAGE, LOCALEDIR );
-	textdomain( PACKAGE );
+	//	setlocale( LC_MESSAGES, "" );
+	//	bindtextdomain( PACKAGE, LOCALEDIR );
+	//	textdomain( PACKAGE );
 #endif
 
 	/* set up the signal handling system */

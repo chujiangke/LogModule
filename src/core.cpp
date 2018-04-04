@@ -99,7 +99,7 @@ static int core_udp_listen(nc_sock_t *ncsock)
 
   if (!need_udphelper) {
     /* simulates a udphelper_sockets_open() call */
-    sockbuf = calloc(2, sizeof(int));
+    sockbuf = (int*)calloc(2, sizeof(int));
     sockbuf[0] = 1;
     sockbuf[1] = sock = netcat_socket_new(PF_INET, SOCK_DGRAM);
   }
@@ -227,7 +227,7 @@ static int core_udp_listen(nc_sock_t *ncsock)
       local_addr.sin_family = myaddr.sin_family;
 #else
       ret = sizeof(local_addr);
-      ret = getsockname(sock, (struct sockaddr *)&local_addr, &ret);
+      ret = getsockname(sock, (struct sockaddr *)&local_addr, (socklen_t*)(&ret));
 #endif
 
       if (ret == 0) {
@@ -282,7 +282,7 @@ static int core_udp_listen(nc_sock_t *ncsock)
 	dup_socket.port.num = ntohs(rem_addr.sin_port);
 	/* copy the received data in the socket's queue */
 	ncsock->recvq.len = recv_ret;
-	ncsock->recvq.head = ncsock->recvq.pos = malloc(recv_ret);
+	ncsock->recvq.head = ncsock->recvq.pos = (unsigned char*)malloc(recv_ret);
 	memcpy(ncsock->recvq.head, my_hdr_vec.iov_base, recv_ret);
 	/* FIXME: this ONLY saves the first 1024 bytes! and the others? */
 #else
@@ -707,7 +707,7 @@ int core_readwrite( nc_sock_t *nc_main, nc_sock_t *nc_slave )
 			{
 				/* move the data block in a dedicated allocated space */
 				debug_v( ("  reallocating %d data bytes in slave->recvq", my_recvq->len) );
-				my_recvq->head = malloc( my_recvq->len );
+				my_recvq->head =(unsigned char*) malloc( my_recvq->len );
 				memcpy( my_recvq->head, my_recvq->pos, my_recvq->len );
 				my_recvq->pos = my_recvq->head;
 			}
@@ -798,7 +798,7 @@ skip_sect:
 				memset( my_sendq, 0, sizeof(*my_sendq) );
 			}else if ( !my_sendq->head )
 			{
-				my_sendq->head = malloc( my_sendq->len );
+			        my_sendq->head = (unsigned char*)malloc( my_sendq->len );
 				memcpy( my_sendq->head, my_sendq->pos, my_sendq->len );
 				my_sendq->pos = my_sendq->head;
 			}
@@ -860,7 +860,7 @@ skip_sect:
 				}else if ( !my_recvq->head )
 				{
 					/* move the data block in a dedicated allocated space */
-					my_recvq->head = malloc( my_recvq->len );
+				        my_recvq->head = (unsigned char*)malloc( my_recvq->len );
 					memcpy( my_recvq->head, my_recvq->pos, my_recvq->len );
 					my_recvq->pos = my_recvq->head;
 				}
@@ -917,7 +917,7 @@ skip_sect:
 				memset( my_sendq, 0, sizeof(*my_sendq) );
 			}else if ( !my_sendq->head )
 			{
-				my_sendq->head = malloc( my_sendq->len );
+   			        my_sendq->head = (unsigned char*)malloc( my_sendq->len );
 				memcpy( my_sendq->head, my_sendq->pos, my_sendq->len );
 				my_sendq->pos = my_sendq->head;
 			}

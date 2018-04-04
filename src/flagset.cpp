@@ -49,7 +49,7 @@ bool netcat_flag_init(unsigned int len)
   }
 
   /* since we may be asking a big amount of memory, this call could fail */
-  flagset = malloc(flagset_len);
+  flagset = (char*)malloc(flagset_len);
   if (!flagset)
     return FALSE;
 

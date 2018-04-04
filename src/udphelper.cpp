@@ -116,7 +116,7 @@ int udphelper_sockets_open(int **sockbuf, in_port_t nport)
   struct lifreq *nc_ifreq = NULL;
 
   /* initialize the sockbuf (assuming the function will be positive */
-  my_sockbuf = malloc(sizeof(int));
+  my_sockbuf =(int*) malloc(sizeof(int));
   if (!my_sockbuf) {
     errno = ENOMEM;
     return -1;
@@ -141,7 +141,7 @@ int udphelper_sockets_open(int **sockbuf, in_port_t nport)
        lifc_len, so try to allocate a larger buffer in order to determine
        the total interfaces number. */
     free(nc_ifreq);	/* don't use realloc here, this way it is faster */
-    nc_ifreq = malloc(alloc_size);
+    nc_ifreq = (ifreq*)malloc(alloc_size);
     nc_ifconf.lifc_len = alloc_size;
     nc_ifconf.lifc_req = nc_ifreq;
     /* wait for updating nc_ifconf.lifc_req before eventually jumping to the
@@ -208,7 +208,7 @@ int udphelper_sockets_open(int **sockbuf, in_port_t nport)
 
     /* update immediately the sockets buffer so that any following error would
        close this one in the cleanup. */
-    my_sockbuf = realloc(my_sockbuf, (++sock_total + 1) * sizeof(int));
+    my_sockbuf = (int*)realloc(my_sockbuf, (++sock_total + 1) * sizeof(int));
     if (!my_sockbuf) {
       errno = ENOMEM;
       goto err;
@@ -227,7 +227,7 @@ int udphelper_sockets_open(int **sockbuf, in_port_t nport)
        kernel, but we don't want a different port for each interface, so stick
        to this one. */
     if (nport == 0) {
-      int sa_tmp_len = sizeof(if_addr);
+      socklen_t sa_tmp_len = sizeof(if_addr);
 
       /* we don't need anymore if_addr, so we may corrupt it safely */
       ret = getsockname(newsock, (struct sockaddr *)&if_addr, &sa_tmp_len);

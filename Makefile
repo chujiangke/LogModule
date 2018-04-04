@@ -22,7 +22,7 @@ LIBS :=pthread dl
 LIB_PATH := 
 
 ## Add driver-specific include directory to the search path
-CFLAGS += -D_LINUX_
+CFLAGS += -D_LINUX_ -DHAVE_CONFIG_H
 
 ### ARC_TARGET - target name for archive file, excluding file extension.
 ### ARC_TARGET - 静态库

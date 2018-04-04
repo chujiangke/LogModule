@@ -116,7 +116,7 @@ int netcat_fhexdump(FILE *stream, char c, const void *data, size_t datalen)
 
 int netcat_snprintnum(char *str, size_t size, unsigned long number)
 {
-  char *p = "\0kMGT";
+  const char *p = "\0kMGT";
 
   while ((number > 9999) && (*p != 'T')) {
     number = (number + 500) / 1000;
@@ -243,7 +243,7 @@ char *netcat_string_split(char **buf)
   register char *o, *r;
 
   if (!buf || (*buf == NULL))
-    return *buf = "";
+    return  *buf = "";
   /* skip all initial spaces */
   for (o = *buf; isspace((int)*o); o++);
   /* save the pointer and move to the next token */
@@ -269,7 +269,7 @@ void netcat_commandline_read(int *argc, char ***argv)
   fflush(stderr);			/* this isn't needed, but on ALL OS? */
   commandline_need_newline = TRUE;	/* fancy output handling */
   p = fgets(buf, sizeof(buf), stdin);
-  my_argv = malloc(128 * sizeof(char *));	/* FIXME: 128? */
+  my_argv =(char**) malloc(128 * sizeof(char *));	/* FIXME: 128? */
   memset(my_argv, 0, 128 * sizeof(char *));
   my_argv[0] = saved_argv0;		/* leave the program name intact */
   if (!buf[0])				/* there is no input (ctrl+d?) */
@@ -284,7 +284,7 @@ void netcat_commandline_read(int *argc, char ***argv)
 
   /* now my_argc counts one more, because we have a NULL element at
    * the end of the list */
-  my_argv = realloc(my_argv, my_argc-- * sizeof(char *));
+  my_argv = (char**)realloc(my_argv, my_argc-- * sizeof(char *));
 
   /* sends out the results */
   *argc = my_argc;
